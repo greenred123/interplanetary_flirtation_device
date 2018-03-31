@@ -16,6 +16,9 @@ files = glob.glob("print-files/*.txt")
 PRINTER_NAME = "Brother_HL-L2305_series"
 IPP_ERROR = "ipp error"
 
+if __name__ == '__main__':
+    app.run()
+
 @app.route('/print_test', methods=['POST'])
 def print_test():
     try:
