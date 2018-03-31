@@ -1,0 +1,10 @@
+ifd_settings.cfg
+*.pyc
+__pycache__
+.vscode/
+Pipfile.lock
+venv/
+*.pyc
+.DS_Store
+__MACOSX/
+ifd.wsgi
