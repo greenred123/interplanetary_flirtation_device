@@ -6,14 +6,13 @@ import cups
 import glob
 
 app = Flask(__name__)
-app.config.from_envvar('IFD_SETTINGS', silent=True)
+app.config.from_envvar('IFD_SETTINGS', silent=False)
 
 cups_conn = cups.Connection()
 IPPError = cups.IPPError()
 files = glob.glob("print-files/*.txt")
 
-#should go in config
-PRINTER_NAME = "Brother_HL_L2305_series"
+PRINTER_NAME = app.config['PRINTER_NAME']
 IPP_ERROR = "ipp error"
 
 if __name__ == '__main__':
