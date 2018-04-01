@@ -6,7 +6,9 @@ import cups
 import glob
 
 app = Flask(__name__)
-app.config.from_envvar('IFD_SETTINGS', silent=False)
+
+#app.config['PRINTER_NAME'] = "Brother_HL_L2305_series"
+app.config['PRINTER_NAME'] = ""
 
 cups_conn = cups.Connection()
 IPPError = cups.IPPError()
@@ -16,7 +18,7 @@ PRINTER_NAME = app.config['PRINTER_NAME']
 IPP_ERROR = "ipp error"
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=False)
 
 @app.route('/print_test', methods=['POST'])
 def print_test():
