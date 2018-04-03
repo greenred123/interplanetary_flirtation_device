@@ -1,21 +1,21 @@
 from flask import Flask
 from flask import make_response, jsonify
 
+import os
 import random
 import cups
 import glob
 
 app = Flask(__name__)
-
-#app.config['PRINTER_NAME'] = "Brother_HL_L2305_series"
-app.config['PRINTER_NAME'] = ""
-
-cups_conn = cups.Connection()
-IPPError = cups.IPPError()
-files = glob.glob("print-files/*.txt")
+app.config['PRINTER_NAME'] = "BrGenPrintML2"
 
 PRINTER_NAME = app.config['PRINTER_NAME']
 IPP_ERROR = "ipp error"
+PRINT_FILES_PATH =  os.path.join(app.root_path, 'print-files')
+
+cups_conn = cups.Connection()
+IPPError = cups.IPPError()
+files = glob.glob(PRINT_FILES_PATH + "/*.txt")
 
 if __name__ == '__main__':
     app.run(debug=False)
@@ -33,14 +33,13 @@ def print_test():
 
 @app.route('/print_file', methods=['POST'])
 def print_file():
-    filename =  random.choice(files)
+    filename = random.choice(files)
     try:
         cups_conn.printFile(PRINTER_NAME, filename, "job", {})
     except IPPError:
         printer_error(IPP_ERROR)
     else:
         return make_response(jsonify({'status': 'OK'}), 200)
-
 
 @app.errorhandler(500)
 def five_hundred(error):
