@@ -11,7 +11,8 @@ FRONTEND_PATH = os.path.join(APP_ROOT, 'public')
 
 app = Flask(__name__, template_folder = FRONTEND_PATH, static_folder = FRONTEND_PATH)
 
-PRINTER_NAME  = "BrGenPrintML2"
+PRINTER_NAME = "Brother_HL_L2305_series"
+#PRINTER_NAME  = "BrGenPrintML2"
 IPP_ERROR = "ipp error"
 PRINT_FILES_PATH =  os.path.join(APP_ROOT, 'print-files')
 
