@@ -1,17 +1,20 @@
 from flask import Flask
-from flask import make_response, jsonify
+from flask import make_response, jsonify, render_template
 
 import os
 import random
 import cups
 import glob
 
-app = Flask(__name__)
+APP_ROOT = os.path.dirname(__file__)
+FRONTEND_PATH = os.path.join(APP_ROOT, 'frontend')
+
+app = Flask(__name__, template_folder = FRONTEND_PATH)
 app.config['PRINTER_NAME'] = "BrGenPrintML2"
 
 PRINTER_NAME = app.config['PRINTER_NAME']
 IPP_ERROR = "ipp error"
-PRINT_FILES_PATH =  os.path.join(app.root_path, 'print-files')
+PRINT_FILES_PATH =  os.path.join(APP_ROOT, 'print-files')
 
 cups_conn = cups.Connection()
 IPPError = cups.IPPError()
@@ -19,6 +22,10 @@ files = glob.glob(PRINT_FILES_PATH + "/*.txt")
 
 if __name__ == '__main__':
     app.run(debug=False)
+
+@app.route('/')
+def index():
+    return render_template(FRONTEND_PATH + "/index.html")
 
 @app.route('/print_test', methods=['POST'])
 def print_test():
