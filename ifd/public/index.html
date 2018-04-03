@@ -48,12 +48,12 @@
 			monster by <a href="http://www.3drt.com/downloads.htm" target="_blank" rel="noopener">3drt</a>
 		</div>
 
-		<script src="threejs/three.js"></script>
-		<script src="hammerjs/hammer.js"></script>
+		<script src="public/threejs/three.js"></script>
+		<script src="public/hammerjs/hammer.js"></script>
 		<!-- <script src="zingtouch/zingtouch.js"></script> -->
 
-		<script src="threejs/Detector.js"></script>
-		<script src="threejs/stats.min.js"></script>
+		<script src="public/threejs/Detector.js"></script>
+		<script src="public/threejs/stats.min.js"></script>
 		<script id="fragmentShader" type="x-shader/x-fragment">
 			precision highp float;
 			precision highp int;
@@ -207,7 +207,7 @@
 			var container, stats, clock, mixer;
 			var camera, scene, renderer, objects, mesh, uniforms;
 			var warpMaterial;
-			var url = 'snail-4.json';
+			var url = 'public/snail-4.json';
 
 			init();
 			//animate();

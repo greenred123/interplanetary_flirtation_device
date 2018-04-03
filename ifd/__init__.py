@@ -7,9 +7,9 @@ import cups
 import glob
 
 APP_ROOT = os.path.dirname(__file__)
-FRONTEND_PATH = os.path.join(APP_ROOT, 'frontend')
+FRONTEND_PATH = os.path.join(APP_ROOT, 'public')
 
-app = Flask(__name__, template_folder = FRONTEND_PATH)
+app = Flask(__name__, template_folder = FRONTEND_PATH, static_folder = FRONTEND_PATH)
 app.config['PRINTER_NAME'] = "BrGenPrintML2"
 
 PRINTER_NAME = app.config['PRINTER_NAME']
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
 @app.route('/')
 def index():
-    return render_template(FRONTEND_PATH + "/index.html")
+    return render_template("/index.html")
 
 @app.route('/print_test', methods=['POST'])
 def print_test():
