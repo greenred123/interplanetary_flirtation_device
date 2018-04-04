@@ -25,7 +25,7 @@
 			}
 
 			#region {
-				border: 5px solid red;
+				border: none;
 				width: 25vw;
 				height: 67vh;
 				position: absolute;
@@ -43,17 +43,19 @@
 		<div id="region"></div>
 
 		<div id="container"></div>
-		<div id="info">
+		<!-- <div id="info">
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> -
 			monster by <a href="http://www.3drt.com/downloads.htm" target="_blank" rel="noopener">3drt</a>
-		</div>
+		</div> -->
 
-		<script src="public/threejs/three.js"></script>
-		<script src="public/hammerjs/hammer.js"></script>
-		<!-- <script src="zingtouch/zingtouch.js"></script> -->
-
-		<script src="public/threejs/Detector.js"></script>
-		<script src="public/threejs/stats.min.js"></script>
+		<!-- <script src="static/threejs/three.js"></script>
+		<script src="static/hammerjs/hammer.js"></script>
+		<script src="static/threejs/Detector.js"></script>
+		<script src="static/threejs/stats.min.js"></script> -->
+		<script src="threejs/three.js"></script>
+		<script src="hammerjs/hammer.js"></script>
+		<script src="threejs/Detector.js"></script>
+		<script src="threejs/stats.min.js"></script>
 		<script id="fragmentShader" type="x-shader/x-fragment">
 			precision highp float;
 			precision highp int;
@@ -207,7 +209,8 @@
 			var container, stats, clock, mixer;
 			var camera, scene, renderer, objects, mesh, uniforms;
 			var warpMaterial;
-			var url = 'public/snail-4.json';
+			// var url = 'static/snail-5.json';
+			var url = 'snail-5.json';
 
 			init();
 			//animate();
@@ -233,7 +236,10 @@
 
 				new THREE.ObjectLoader().load(url, function (loadedScene) {
 					scene = loadedScene;
-					scene.background = new THREE.Color(0xffffff);
+					//texture = new THREE.TextureLoader().load("static/background.jpg");
+					textureBody = new THREE.TextureLoader().load("background.jpg");
+					textureBody.repeat.set( 1.22, 1.22);
+					scene.background = textureBody;
 					// If the loaded file contains a perspective camera, use it with adjusted aspect ratio...
 					uniforms = {
 						scale: { value: 1.0 },
@@ -250,6 +256,17 @@
 						fragmentShader: document.getElementById( 'fragmentShader' ).textContent
 					} );
 
+					defaultBodyMaterial = new THREE.MeshPhongMaterial({
+						color : new THREE.Color(0.047058823529411764, 0.5058823529411764, 0.45098039215686275),
+						emissive: new THREE.Color(0.7176470588235294, 0.3568627450980392, 0.7254901960784313), 
+						bumpMap: textureBody,
+						specular: new THREE.Color (0.592156862745098, 0.48627450980392156, 0.47843137254901963 )
+					});
+
+					defaultShellMaterial = new THREE.MeshLambertMaterial({
+						color: new THREE.Color(0.7725490196078432, 0.5647058823529412, 0.8941176470588236),
+						emissive: new THREE.Color(0.25882352941176473, 0.30196078431372547,0.7333333333333333)
+					});
 
 					scene.traverse(function (sceneChild) {
 						if (sceneChild.type === 'PerspectiveCamera') {
@@ -258,12 +275,25 @@
 							camera.updateProjectionMatrix();
 						}
 
-						if (sceneChild.type === 'Mesh') {
-							mesh = sceneChild;
+						if (sceneChild.name === 'body') {
+							bodyMesh = sceneChild;
+						}
+						if (sceneChild.name === 'shell') {
+							shellMesh = sceneChild;
 						}
 					});
+					bodyMesh.material = defaultBodyMaterial;
+					shellMesh.material = defaultShellMaterial;
+
+
+					// var faceNormalsHelper = new THREE.FaceNormalsHelper(shellMesh, 10);
+					// shellMesh.add(faceNormalsHelper);
+					// var vertexNormalsHelper = new THREE.VertexNormalsHelper(shellMesh, 10);
+					// shellMesh.add(vertexNormalsHelper);
+
+					bodyMesh.material.needsUpdate = true;
+					shellMesh.material.needsUpdate = true;
 					
-					// ... else create a new camera and use it in the loaded scene
 					if (camera === undefined) {
 						camera = new THREE.PerspectiveCamera(30, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
 						camera.position.set(- 200, 0, 200);
@@ -284,66 +314,11 @@
 					animate();
 				});
 
-				// scene = new THREE.Scene();
-				// scene.fog = new THREE.FogExp2( 0x000000, 0.035 );
-
-				// mixer = new THREE.AnimationMixer( scene );
-
-				// var loader = new THREE.JSONLoader();
-				// loader.load( '/monster/monster.js', function ( geometry, materials ) {
-
-				// 	// adjust color a bit
-
-				// 	var material = materials[ 0 ];
-				// 	material.morphTargets = true;
-				// 	material.color.setHex( 0xffaaaa );
-
-				// 	for ( var i = 0; i < 729; i ++ ) {
-
-				// 		var mesh = new THREE.Mesh( geometry, materials );
-
-				// 		// random placement in a grid
-
-				// 		var x = ( ( i % 27 )  - 13.5 ) * 2 + THREE.Math.randFloatSpread( 1 );
-				// 		var z = ( Math.floor( i / 27 ) - 13.5 ) * 2 + THREE.Math.randFloatSpread( 1 );
-
-				// 		mesh.position.set( x, 0, z );
-
-				// 		var s = THREE.Math.randFloat( 0.00075, 0.001 );
-				// 		mesh.scale.set( s, s, s );
-
-				// 		mesh.rotation.y = THREE.Math.randFloat( -0.25, 0.25 );
-
-				// 		mesh.matrixAutoUpdate = false;
-				// 		mesh.updateMatrix();
-
-				// 		scene.add( mesh );
-
-				// 		mixer.clipAction( geometry.animations[ 0 ], mesh )
-				// 				.setDuration( 1 )			// one second
-				// 				.startAt( - Math.random() )	// random phase (already running)
-				// 				.play();					// let's go
-
-				// 	}
-
-				// } );
-
-				// // lights
-
-				// var ambientLight = new THREE.AmbientLight( 0xcccccc );
-				// scene.add( ambientLight );
-
-				// var pointLight = new THREE.PointLight( 0xff4400, 5, 30 );
-				// pointLight.position.set( 5, 0, 0 );
-				// scene.add( pointLight );
-
-				// renderer
-
 
 				// stats
 
 				stats = new Stats();
-				container.appendChild( stats.dom );
+				// container.appendChild( stats.dom );
 
 				// events
 
@@ -375,25 +350,17 @@
 
 			function render() {
 
-				// var timer = Date.now() * 0.0005;
-
-				// camera.position.x = Math.cos( timer ) * 10;
-				// camera.position.y = 4;
-				// camera.position.z = Math.sin( timer ) * 10;
-
-				// mixer.update( clock.getDelta() );
-
-				// camera.lookAt( scene.position );
 				var delta = clock.getDelta();
 
 				uniforms.time.value += delta * 10.0;
 
-				renderer.render( scene, camera );
+				renderer.render(scene, camera);
 
 			}
 
 			function warp() {
-				mesh.material = warpMaterial;
+				bodyMesh.material = warpMaterial;
+				shellMesh.material = warpMaterial;
 			}
 
 			var region = document.getElementById('region');
@@ -414,25 +381,7 @@
 				if (counter >= 8) {
 					warp();
 				}
-			}); 
-
-			// var region = document.getElementsByTagName('body')[0];
-			// var activeRegion = ZingTouch.Region(region);
-
-			// var childElement = document.getElementById('region');
-
-			// var counter = 0;
-
-			// new ZingTouch.Swipe({
-			// 	numInputs: 2,
-			// 	maxRestTime: 100,
-			// 	escapeVelocity: 0.2
-			// });
-
-			// activeRegion.bind(childElement, 'swipe', function(event){
-			// 	counter++;
-			// 	childElement.textContent = "velocity: " + event.detail.data[0].velocity + " direction: " + event.detail.data[0].currentDirection;
-			// });
+			});
 
 		</script>
 	</body>
