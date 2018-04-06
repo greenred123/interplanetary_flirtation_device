@@ -8,7 +8,7 @@
     "materials":[{
         "emissive":0,
         "vertexColors":0,
-        "uuid":"26ABA542-F9DC-4E90-806A-A581B847C09C",
+        "uuid":"2E42B382-C4A7-4EC0-B4DD-FBECC280DB9F",
         "specular":8355711,
         "depthTest":true,
         "blending":"NormalBlending",
@@ -45,8 +45,8 @@
             }
         },
         "type":"BufferGeometry",
-        "uuid":"70E97259-E67C-41BA-89FD-204B2E571ADA",
-        "name":"snail-1.obj.004Geometry.3"
+        "uuid":"95564B9B-7B0C-4FBB-893D-7B768DAF6C7B",
+        "name":"snail-1.obj.004Geometry.5"
     },{
         "data":{
             "index":{
@@ -73,8 +73,8 @@
             }
         },
         "type":"BufferGeometry",
-        "uuid":"E51E63F1-E0AE-4D36-8495-BC256528B091",
-        "name":"snail-1.obj.2Geometry.12"
+        "uuid":"CD2C91DC-DFA6-4DC0-BB0B-A3BA3006F212",
+        "name":"snail-1.obj.2Geometry.14"
     }],
     "animations":[{
         "name":"default",
@@ -84,21 +84,21 @@
     "images":[],
     "object":{
         "type":"Scene",
-        "uuid":"0DC248AB-DF0A-486F-9CA1-D2FD9A39E42C",
+        "uuid":"23439EE6-6B41-4AF4-B16E-21180D38B678",
         "matrix":[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
         "children":[{
             "name":"body",
-            "uuid":"819642FC-7492-4201-A1C3-60F00670DE48",
+            "uuid":"2B17D07F-CAEB-431A-BC36-92DB773B336D",
             "matrix":[-1,0,0,0,0,1,-1.62921e-07,0,0,-1.62921e-07,-1,0,0,0,0,1],
             "visible":true,
             "type":"Mesh",
-            "material":"26ABA542-F9DC-4E90-806A-A581B847C09C",
+            "material":"2E42B382-C4A7-4EC0-B4DD-FBECC280DB9F",
             "castShadow":true,
             "receiveShadow":true,
-            "geometry":"E51E63F1-E0AE-4D36-8495-BC256528B091"
+            "geometry":"CD2C91DC-DFA6-4DC0-BB0B-A3BA3006F212"
         },{
             "name":"Camera",
-            "uuid":"08C0AC3A-06D6-42AE-B992-67D76DBEBCDE",
+            "uuid":"D4A4AEE4-8E47-465A-8B72-E0CE36D46A81",
             "matrix":[0.999101,-0.00574053,0.0420172,0,-0.0418214,0.0307777,0.998651,0,-0.00702598,-0.99951,0.03051,0,-0.0731326,-10.4038,0.317574,1],
             "visible":true,
             "type":"PerspectiveCamera",
@@ -108,7 +108,7 @@
             "fov":28.8415
         },{
             "name":"Lamp",
-            "uuid":"32449C49-DA2F-4197-8DBE-08F887F04405",
+            "uuid":"D5F23D74-56DF-4937-A84D-59557ED16CF1",
             "matrix":[0.0271356,0.00521929,0.354888,0,-0.224739,0.275733,0.013129,0,-0.274709,-0.225062,0.0243149,0,-9.36208,-6.34827,2.04916,1],
             "visible":true,
             "type":"SpotLight",
@@ -120,17 +120,17 @@
             "decayExponent":2
         },{
             "name":"shell",
-            "uuid":"8C8AAEED-63C3-4105-924C-F8EE79B61EA1",
+            "uuid":"DB144935-A33A-4A65-BE74-D1E4EC11E20B",
             "matrix":[-1,0,0,0,0,1,-1.62921e-07,0,0,-1.62921e-07,-1,0,0,0,0,1],
             "visible":true,
             "type":"Mesh",
-            "material":"26ABA542-F9DC-4E90-806A-A581B847C09C",
+            "material":"2E42B382-C4A7-4EC0-B4DD-FBECC280DB9F",
             "castShadow":true,
             "receiveShadow":true,
-            "geometry":"70E97259-E67C-41BA-89FD-204B2E571ADA"
+            "geometry":"95564B9B-7B0C-4FBB-893D-7B768DAF6C7B"
         },{
             "name":"Spot",
-            "uuid":"B11F6E7D-4FAC-4D6D-9440-8A8E54231D58",
+            "uuid":"C8792F59-046B-450C-B143-F1843CF0B6DE",
             "matrix":[0.269484,0.218977,0.00254781,0,0.0363226,-0.0486785,0.341892,0,0.215958,-0.265063,-0.0606831,0,5.64031,-9.25924,-1.37861,1],
             "visible":true,
             "type":"SpotLight",
@@ -142,7 +142,7 @@
             "decayExponent":2
         },{
             "name":"Spot.001",
-            "uuid":"8DB4DD31-9AA3-4A66-B3AA-D63DB84CF8CF",
+            "uuid":"790208AD-CD09-4242-AE26-488AEEFCC68B",
             "matrix":[-0.365634,-0.126875,-0.00620372,0,-0.0117084,0.014838,0.38661,0,-0.126486,0.365386,-0.017854,0,-5.05711,10.421,-0.44071,1],
             "visible":true,
             "type":"SpotLight",

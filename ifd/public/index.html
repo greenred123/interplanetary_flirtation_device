@@ -208,9 +208,9 @@
 
 			var container, stats, clock, mixer;
 			var camera, scene, renderer, objects, mesh, uniforms;
-			var warpMaterial;
+			var shellMesh, bodyMesh, warpMaterial;
 			// var url = 'static/snail-5.json';
-			var url = 'snail-5.json';
+			var url = 'snail-animation.json';
 
 			init();
 			//animate();
@@ -239,6 +239,8 @@
 					//texture = new THREE.TextureLoader().load("static/background.jpg");
 					textureBody = new THREE.TextureLoader().load("background.jpg");
 					textureBody.repeat.set( 1.22, 1.22);
+					textureBody.wrapS = THREE.MirroredRepeatWrapping;
+					textureBody.wrapT = THREE.MirroredRepeatWrapping;
 					scene.background = textureBody;
 					// If the loaded file contains a perspective camera, use it with adjusted aspect ratio...
 					uniforms = {
@@ -264,8 +266,8 @@
 					});
 
 					defaultShellMaterial = new THREE.MeshLambertMaterial({
-						color: new THREE.Color(0.7725490196078432, 0.5647058823529412, 0.8941176470588236),
-						emissive: new THREE.Color(0.25882352941176473, 0.30196078431372547,0.7333333333333333)
+						color: new THREE.Color(0.8862745098039215, 0.5137254901960784, 0.6313725490196078),
+						emissive: new THREE.Color(0.7333333333333333, 0.10196078431372549, 0.39215686274509803)
 					});
 
 					scene.traverse(function (sceneChild) {
@@ -285,14 +287,29 @@
 					bodyMesh.material = defaultBodyMaterial;
 					shellMesh.material = defaultShellMaterial;
 
+					//bodyMesh.geometry.morphAttributes.position[0].array
+
+					// bodyMesh.dynamic = true;
+					// bodyMesh.material.morphTargets = true;
+					// bodyMesh.updateMorphTargets();
+					// bodyMesh.material.needsUpdate = true;
+					// bodyMesh.geometry.verticesNeedUpdate = true;
+
+					bodyMesh.position.set(0, -0.1, -0.1);
+					bodyMesh.rotation.set(3.22, 0.06, 6.32);
+
+					shellMesh.position.set(-0.02, 0.06, -0.08);
+					shellMesh.rotation.set(3.14, 0, 0);
+					
+					
 
 					// var faceNormalsHelper = new THREE.FaceNormalsHelper(shellMesh, 10);
 					// shellMesh.add(faceNormalsHelper);
 					// var vertexNormalsHelper = new THREE.VertexNormalsHelper(shellMesh, 10);
 					// shellMesh.add(vertexNormalsHelper);
 
-					bodyMesh.material.needsUpdate = true;
-					shellMesh.material.needsUpdate = true;
+					// bodyMesh.material.needsUpdate = true;
+					// shellMesh.material.needsUpdate = true;
 					
 					if (camera === undefined) {
 						camera = new THREE.PerspectiveCamera(30, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
@@ -308,9 +325,10 @@
 					// scene.add(ground);
 					// scene.fog = new THREE.Fog(0xffffff, 1000, 10000);
 					// Initialization of the loaded animations
-					// var animationClip = scene.animations[0];
-					// mixer = new THREE.AnimationMixer(scene);
-					// mixer.clipAction(animationClip).play();
+					var animationClip = scene.animations[1];
+					mixer = new THREE.AnimationMixer(scene);
+					mixer.clipAction(animationClip).play();
+					
 					animate();
 				});
 
@@ -351,14 +369,27 @@
 			function render() {
 
 				var delta = clock.getDelta();
+				// bodyMesh.dynamic = true;
+				// bodyMesh.material.morphTargets = true;
+				// //bodyMesh.updateMorphTargets();
+				// bodyMesh.material.needsUpdate = true;
+				// // bodyMesh.geometry.verticesNeedUpdate = true;
+				// bodyMesh.geometry.verticesNeedUpdate = true;
+				// bodyMesh.geometry.elementsNeedUpdate = true;
+				// bodyMesh.geometry.morphTargetsNeedUpdate = true;
+				// bodyMesh.geometry.uvsNeedUpdate = true;
+				// bodyMesh.geometry.normalsNeedUpdate = true;
+				// bodyMesh.geometry.colorsNeedUpdate = true;
+				// bodyMesh.geometry.tangentsNeedUpdate = true;
 
 				uniforms.time.value += delta * 10.0;
-
+				// bodyMesh.morphTargetInfluences[5] = (bodyMesh.morphTargetInfluences[5] + 0.01) % 1;
+				mixer.update(deltaSeconds);
 				renderer.render(scene, camera);
 
 			}
 
-			function warp() {
+			function cum() {
 				bodyMesh.material = warpMaterial;
 				shellMesh.material = warpMaterial;
 			}
@@ -378,8 +409,8 @@
 			mc.on("swipedown tap swipeleft swiperight swipeup swipe", function(ev) {
 				counter++;
 				region.textContent = counter + " " + ev.type +" gestures detected.";
-				if (counter >= 8) {
-					warp();
+				if (counter >= 4) {
+					cum();
 				}
 			});
 
