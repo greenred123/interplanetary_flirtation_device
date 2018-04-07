@@ -52,7 +52,7 @@
 		<script src="static/hammerjs/hammer.js"></script>
 		<script src="static/threejs/Detector.js"></script>
 		<script src="static/threejs/stats.min.js"></script> -->
-		<script src="threejs/three.js"></script>
+		<script src="threejs/three-91.js"></script>
 		<script src="hammerjs/hammer.js"></script>
 		<script src="threejs/Detector.js"></script>
 		<script src="threejs/stats.min.js"></script>
@@ -286,50 +286,48 @@
 					});
 					bodyMesh.material = defaultBodyMaterial;
 					shellMesh.material = defaultShellMaterial;
+					
+					bodyMesh.material.morphTargets = true;
 
-					//bodyMesh.geometry.morphAttributes.position[0].array
+					// bodyMesh.position.set(0, -0.1, -0.1);
+					// bodyMesh.rotation.set(3.22, 0.06, 6.32);
 
-					// bodyMesh.dynamic = true;
-					// bodyMesh.material.morphTargets = true;
-					// bodyMesh.updateMorphTargets();
-					// bodyMesh.material.needsUpdate = true;
-					// bodyMesh.geometry.verticesNeedUpdate = true;
-
-					bodyMesh.position.set(0, -0.1, -0.1);
-					bodyMesh.rotation.set(3.22, 0.06, 6.32);
 
 					shellMesh.position.set(-0.02, 0.06, -0.08);
 					shellMesh.rotation.set(3.14, 0, 0);
-					
-					
-
-					// var faceNormalsHelper = new THREE.FaceNormalsHelper(shellMesh, 10);
-					// shellMesh.add(faceNormalsHelper);
-					// var vertexNormalsHelper = new THREE.VertexNormalsHelper(shellMesh, 10);
-					// shellMesh.add(vertexNormalsHelper);
-
-					// bodyMesh.material.needsUpdate = true;
-					// shellMesh.material.needsUpdate = true;
+			
 					
 					if (camera === undefined) {
 						camera = new THREE.PerspectiveCamera(30, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
 						camera.position.set(- 200, 0, 200);
 					}
-					//controls = new THREE.OrbitControls(camera);
-					// Ground plane and fog: examples for applying additional children and new property values to the loaded scene
-					// var geometry = new THREE.PlaneBufferGeometry(20000, 20000);
-					// var material = new THREE.MeshPhongMaterial({ shininess: 0.1 });
-					// var ground = new THREE.Mesh(geometry, material);
-					// ground.position.set(0, - 250, 0);
-					// ground.rotation.x = - Math.PI / 2;
-					// scene.add(ground);
-					// scene.fog = new THREE.Fog(0xffffff, 1000, 10000);
-					// Initialization of the loaded animations
-					var animationClip = scene.animations[1];
-					mixer = new THREE.AnimationMixer(scene);
-					mixer.clipAction(animationClip).play();
-					
+				
+					mixer = new THREE.AnimationMixer(bodyMesh);
+					// var lipsSubtleWobble = THREE.AnimationClip.CreateClipsFromMorphTargetSequences('snail-moves', bodyMesh.geometry.morphTargets, 30, true);
+					var smallTwitchLBAntenn = THREE.AnimationClip.CreateFromMorphTargetSequence('small-twich-lb-antenn', bodyMesh.geometry.morphTargets, 30);
+					// var bigTwitchLBAntenn = THREE.AnimationClip.CreateFromMorphTargetSequence('big-twitch-lb-antenn', bodyMesh.geometry.morphTargets, 30);
+					// var twitchRBAntenn = THREE.AnimationClip.CreateFromMorphTargetSequence('twitch-rb-antenn', bodyMesh.geometry.morphTargets, 30);
+					// var twitchTopAntenn = THREE.AnimationClip.CreateFromMorphTargetSequence('twitch-top-antenn', bodyMesh.geometry.morphTargets, 30);
+					// var tailLittleTwitch = THREE.AnimationClip.CreateFromMorphTargetSequence('tail-little-twitch', bodyMesh.geometry.morphTargets, 30);
+					// var lipsWobbleBig = THREE.AnimationClip.CreateFromMorphTargetSequence('lips-wobble-big', bodyMesh.geometry.morphTargets, 30);
+					// var tailBigCurl = THREE.AnimationClip.CreateFromMorphTargetSequence('tail-big-curl', bodyMesh.geometry.morphTargets, 30);
+					mixer.clipAction(smallTwitchLBAntenn).setDuration(1).play();
 					animate();
+
+					// mixer = new THREE.AnimationMixer(bodyMesh);
+					// // var lipsSubtleWobble = bodyMesh.geometry.animations[0];
+					// // lipsSubtleWobble.tracks[0].values[1] = 1;
+					// var smallTwitchLBAntenn = bodyMesh.geometry.animations[1];
+					// smallTwitchLBAntenn.tracks[0].times = new Float32Array([0, 0.03333333507180214, 0.23333333432674408, 0.2666666805744171]);
+					// smallTwitchLBAntenn.tracks[0].values = new Float32Array([1, 0, 0, 1]);
+					// // var bigTwitchLBAntenn = bodyMesh.geometry.animations[2];
+					// // var twitchRBAntenn = bodyMesh.geometry.animations[3];
+					// // var twitchTopAntenn = bodyMesh.geometry.animations[4];
+					// // var tailLittleTwitch = bodyMesh.geometry.animations[5];
+					// // var lipsWobbleBig = bodyMesh.geometry.animations[6];
+					// // var tailBigCurl = bodyMesh.geometry.animations[7];
+					// mixer.clipAction(smallTwitchLBAntenn).setLoop(THREE.LoopRepeat).setDuration(10).play();
+					// animate();
 				});
 
 
@@ -369,30 +367,24 @@
 			function render() {
 
 				var delta = clock.getDelta();
-				// bodyMesh.dynamic = true;
-				// bodyMesh.material.morphTargets = true;
-				// //bodyMesh.updateMorphTargets();
-				// bodyMesh.material.needsUpdate = true;
-				// // bodyMesh.geometry.verticesNeedUpdate = true;
-				// bodyMesh.geometry.verticesNeedUpdate = true;
-				// bodyMesh.geometry.elementsNeedUpdate = true;
-				// bodyMesh.geometry.morphTargetsNeedUpdate = true;
-				// bodyMesh.geometry.uvsNeedUpdate = true;
-				// bodyMesh.geometry.normalsNeedUpdate = true;
-				// bodyMesh.geometry.colorsNeedUpdate = true;
-				// bodyMesh.geometry.tangentsNeedUpdate = true;
 
 				uniforms.time.value += delta * 10.0;
-				// bodyMesh.morphTargetInfluences[5] = (bodyMesh.morphTargetInfluences[5] + 0.01) % 1;
-				mixer.update(deltaSeconds);
+	
+				mixer.update(delta);
 				renderer.render(scene, camera);
 
-			}
+			};
 
 			function cum() {
 				bodyMesh.material = warpMaterial;
 				shellMesh.material = warpMaterial;
-			}
+			};
+
+			function createClips ( morphTargetSequence, fps, noLoop ) {
+				
+			};
+
+			
 
 			var region = document.getElementById('region');
 
