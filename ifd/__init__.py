@@ -27,6 +27,12 @@ if __name__ == '__main__':
 def index():
     return render_template("/index.html")
 
+
+@app.route('/test')
+def index():
+    return render_template("/tester.html")
+
+
 @app.route('/print_test', methods=['POST'])
 def print_test():
     try:
