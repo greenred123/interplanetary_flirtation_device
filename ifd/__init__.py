@@ -60,3 +60,10 @@ def printer_error(error_message):
             'status': 'ERROR',
             'error': error_message
         }), 200)
+
+
+@app.route('/print_all', methods=['POST'])
+def print_file():
+    for filename in files:
+        cups_conn.printFile(PRINTER_NAME, filename, "job", {})
+    return make_response(jsonify({'status': 'OK'}), 200)
