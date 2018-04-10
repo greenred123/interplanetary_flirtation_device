@@ -29,7 +29,7 @@ def index():
 
 
 @app.route('/test')
-def index():
+def tester():
     return render_template("/tester.html")
 
 
