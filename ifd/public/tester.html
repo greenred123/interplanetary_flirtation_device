@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>test me</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script>
+        function testMe() {
+            var xhttp = new XMLHttpRequest();
+            var printUrl = "http://192.168.1.9/print_test";
+
+            xhttp.open("POST", printUrl, true);
+            xhttp.send();
+        };
+    </script>
+</head>
+
+<body>
+<input id="clickMe" type="button" value="TEST" onclick="testMe();" />
+</body>
