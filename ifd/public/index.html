@@ -273,7 +273,7 @@
 
 				new THREE.ObjectLoader().load(url, function (loadedScene) {
 					scene = loadedScene;
-					texture = new THREE.TextureLoader().load("static/background.jpg");
+					textureBody = new THREE.TextureLoader().load("static/background.jpg");
 					// textureBody = new THREE.TextureLoader().load("background.jpg");
 					textureBody.repeat.set( 1.22, 1.22);
 					textureBody.wrapS = THREE.MirroredRepeatWrapping;
