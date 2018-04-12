@@ -6,11 +6,10 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
 			body {
-				background:#777;
+				background:#ce9db8e0;
 				padding:0;
 				margin:0;
 				font-weight: bold;
-				overflow:hidden;
 			}
 
 			#info {
@@ -24,19 +23,26 @@
 				text-align:center;
 			}
 
+			#close {
+				position: absolute;
+				right: 15px;
+    			font-size: 20px;
+			}
+
 			#region {
 				border: none;
-				width: 25vw;
+				width: 35vw;
 				height: 67vh;
 				position: absolute;
 				top: 20vh;
 				left: 50vw;
+				color: black;
 			}
 			
 			#shellRegion {
 				/* border: solid 1px red; */
 				width: 20vw;
-				height: 35vh;
+				height: 45vh;
 				position: absolute;
 				top: 45vh;
 				left: 30vw;
@@ -45,7 +51,7 @@
 			#outerShellRegion {
 				/* border: solid 1px red; */
 				width: 15vw;
-				height: 15vh;
+				height: 30vh;
 				position: absolute;
 				top: 55vh;
 				left: 15vw;
@@ -54,9 +60,72 @@
 			a {
 				color: #ffffff;
 			}
+
+			#intro {
+				width: 100vw;
+				height: 100vh;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background: #ce9db8e0;
+				display: table;
+			}
+
+			.intro-text {
+				font-family: Arial, Helvetica, sans-serif;
+				text-align: center;
+				margin: 5px 40px 20px 40px;
+			}
+
+			.icons {
+				width: 100px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.row {
+				text-align:center;
+        		position:relative;
+			}
+
+			.second-text {
+				margin-top: 20px;
+			}
+
+			.inner {
+				display: table-cell;
+				vertical-align: middle;
+			}
 		</style>
 	</head>
 	<body>
+		<div id="intro">
+			<p id="close" onclick="closeOverlay()">&#10006;</p>
+			<div class="inner">
+				
+				<p class="intro-text">Hi, welcome to the Interplanetary Flirtation Device. Please turn your volume up. In order to communicate with an extraterrestrial, you are required to
+					encode your message into touch.
+				</p>
+				<div class="row">
+					<!-- <img class="icons" src="touch-icons/doubletap.png">
+					<img class="icons" src="touch-icons/tap.png">
+					<img class="icons" src="touch-icons/press.png"> -->
+					<img class="icons" src="static/touch-icons/doubletap.png">
+					<img class="icons" src="static/touch-icons/tap.png">
+					<img class="icons" src="static/touch-icons/press.png">
+				</div>
+				<div class="row">
+					<!-- <img class="icons" src="touch-icons/pinch.png">
+					<img class="icons" src="touch-icons/stroke.png"> -->
+					<img class="icons" src="static/touch-icons/pinch.png">
+					<img class="icons" src="static/touch-icons/stroke.png">
+				</div>
+				
+				<p class="intro-text second-text">We have developed an experimental input device using a rare variety of snail. If you are successful in transmitting a message,
+					you will receive confirmation.
+				</p>
+			</div>
+		</div>
 
 		<div id="region"></div>
 		<div id="shellRegion"></div>
@@ -75,150 +144,6 @@
 		<script src="hammerjs/hammer.js"></script>
 		<script src="threejs/Detector.js"></script>
 		<script src="threejs/stats.min.js"></script> -->
-		<script id="fragmentShader" type="x-shader/x-fragment">
-			precision highp float;
-			precision highp int;
-			
-			uniform vec3 color;
-			
-			varying float vNoise;
-			
-			void main() {
-				
-				gl_FragColor = vec4( color * clamp( vNoise, 0.0, 1.0 ), 1.0 );
-			
-			}	  
-		</script>
-		<script id="vertexShader" type="x-shader/x-vertex">
-			precision highp float;
-			precision highp int;
-			
-			// Default THREE.js uniforms available to both fragment and vertex shader
-			// uniform mat4 modelMatrix;
-			// uniform mat4 modelViewMatrix;
-			// uniform mat4 projectionMatrix;
-			// uniform mat4 viewMatrix;
-			// uniform mat3 normalMatrix;
-			
-			uniform float scale;
-			uniform float displacement;
-			uniform float time;
-			uniform float speed;
-			
-			// attribute vec3 position;
-			// attribute vec3 normal;
-			varying float vNoise;
-			
-			//
-			// GLSL textureless classic 3D noise "cnoise",
-			// with an RSL-style periodic variant "pnoise".
-			// Author:  Stefan Gustavson (stefan.gustavson@liu.se)
-			// Version: 2011-10-11
-			//
-			// Many thanks to Ian McEwan of Ashima Arts for the
-			// ideas for permutation and gradient selection.
-			//
-			// Copyright (c) 2011 Stefan Gustavson. All rights reserved.
-			// Distributed under the MIT license. See LICENSE file.
-			// https://github.com/ashima/webgl-noise
-			//
-			
-			vec3 mod289(vec3 x) {
-				return x - floor(x * (1.0 / 289.0)) * 289.0;
-			}
-			
-			vec4 mod289(vec4 x) {
-				return x - floor(x * (1.0 / 289.0)) * 289.0;
-			}
-			
-			vec4 permute(vec4 x) {
-				return mod289(((x*34.0)+1.0)*x);
-			}
-			
-			vec4 taylorInvSqrt(vec4 r) {
-				return 1.79284291400159 - 0.85373472095314 * r;
-			}
-			
-			vec3 fade(vec3 t) {
-				return t*t*t*(t*(t*6.0-15.0)+10.0);
-			}
-			
-			// Classic Perlin noise
-			float cnoise(vec3 P) {
-				vec3 Pi0 = floor(P); // Integer part for indexing
-				vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
-				Pi0 = mod289(Pi0);
-				Pi1 = mod289(Pi1);
-				vec3 Pf0 = fract(P); // Fractional part for interpolation
-				vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
-				vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-				vec4 iy = vec4(Pi0.yy, Pi1.yy);
-				vec4 iz0 = Pi0.zzzz;
-				vec4 iz1 = Pi1.zzzz;
-			
-				vec4 ixy = permute(permute(ix) + iy);
-				vec4 ixy0 = permute(ixy + iz0);
-				vec4 ixy1 = permute(ixy + iz1);
-			
-				vec4 gx0 = ixy0 * (1.0 / 7.0);
-				vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
-				gx0 = fract(gx0);
-				vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-				vec4 sz0 = step(gz0, vec4(0.0));
-				gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-				gy0 -= sz0 * (step(0.0, gy0) - 0.5);
-			
-				vec4 gx1 = ixy1 * (1.0 / 7.0);
-				vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
-				gx1 = fract(gx1);
-				vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-				vec4 sz1 = step(gz1, vec4(0.0));
-				gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-				gy1 -= sz1 * (step(0.0, gy1) - 0.5);
-			
-				vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-				vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-				vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-				vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-				vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-				vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-				vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-				vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
-			
-				vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
-				g000 *= norm0.x;
-				g010 *= norm0.y;
-				g100 *= norm0.z;
-				g110 *= norm0.w;
-				vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
-				g001 *= norm1.x;
-				g011 *= norm1.y;
-				g101 *= norm1.z;
-				g111 *= norm1.w;
-			
-				float n000 = dot(g000, Pf0);
-				float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-				float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-				float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-				float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-				float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-				float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-				float n111 = dot(g111, Pf1);
-			
-				vec3 fade_xyz = fade(Pf0);
-				vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-				vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-				float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
-				return 2.2 * n_xyz;
-			}
-			
-			void main() {
-				vNoise = cnoise(normalize(position) * scale + ( time * speed ) );
-				vec3 pos = position + normal * vNoise * vec3(displacement);
-				gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
-			}
-			
-		</script>
 
 
 		<script>
@@ -227,15 +152,16 @@
 
 			var container, stats, clock, mixer;
 			var camera, scene, renderer, objects, mesh, uniforms;
-			var shellMesh, bodyMesh, warpMaterial, lastTwitch, howOftenTwitch, 
+			var shellMesh, bodyMesh, lastTwitch, howOftenTwitch, 
 			clipActionDefault, clipActionCum, clipActionTwitch, opacityIncreasing,
-			cumDownTimer, wetSmash
+			cumDownTimer, wetSmash, babyThing, alienCum, sprite, spriteMaterial, spriteAdded, spriteMaterial2,
+			spriteMaterialMultiply, spriteMaterial2Subtract;
 			var url = 'static/snail-animation.json';
 			// var url = 'snail-animation.json';
 			var printUrl = "http://192.168.1.9/print_file";
 			var xhttp = new XMLHttpRequest();
 			var came = false;
-			var soundIos = false;
+
 
 			if (!Detector.webgl) {
 				Detector.addGetWebGLMessage();
@@ -248,8 +174,15 @@
 			};
 
 			function init() {
+
 				wetSmash = new Audio('static/audio/wet-smash.wav');
 				//wetSmash = new Audio('audio/wet-smash.wav');
+
+				alienCum = new Audio('static/audio/alien-cum.wav');
+				// alienCum = new Audio('audio/alien-cum.wav');
+
+				babyThing = new Audio('static/audio/baby-thing.wav');
+				// babyThing = new Audio('audio/baby-thing.wav');
 
 				var SCREEN_WIDTH = window.innerWidth;
 				var SCREEN_HEIGHT = window.innerHeight;
@@ -271,10 +204,52 @@
 				howOftenTwitch = 1;
 				comeDownTimer = 0;
 
+				var glow = new THREE.TextureLoader().load('static/glow.png');
+				//var glow = new THREE.TextureLoader().load('glow.png');
+
+				spriteMaterial = new THREE.SpriteMaterial(
+				{
+					map: glow,
+					// useScreenCoordinates: false, alignment: THREE.SpriteAlignment.center,
+					color: 0x0000ff, 
+					transparent: false, 
+					blending: THREE.AdditiveBlending
+				});
+
+				spriteMaterialMultiply = new THREE.SpriteMaterial(
+					{
+						map: glow,
+						// useScreenCoordinates: false, alignment: THREE.SpriteAlignment.center,
+						color: 0x0000ff,
+						transparent: false,
+						blending: THREE.MultiplyBlending
+					});
+
+				spriteMaterial2 = new THREE.SpriteMaterial(
+					{
+						map: glow,
+						// useScreenCoordinates: false, alignment: THREE.SpriteAlignment.center,
+						color: 0xDE23E8,
+						transparent: false,
+						blending: THREE.AdditiveBlending
+					});
+
+				spriteMaterial2Subtract = new THREE.SpriteMaterial(
+					{
+						map: glow,
+						// useScreenCoordinates: false, alignment: THREE.SpriteAlignment.center,
+						color: 0xDE23E8,
+						transparent: false,
+						blending: THREE.SubtractiveBlending
+					});
+
+				sprite = new THREE.Sprite(spriteMaterial);
+				sprite.scale.set(200, 200, 1.0);
+
 				new THREE.ObjectLoader().load(url, function (loadedScene) {
 					scene = loadedScene;
 					textureBody = new THREE.TextureLoader().load("static/background.jpg");
-					// textureBody = new THREE.TextureLoader().load("background.jpg");
+					//textureBody = new THREE.TextureLoader().load("background.jpg");
 					textureBody.repeat.set( 1.22, 1.22);
 					textureBody.wrapS = THREE.MirroredRepeatWrapping;
 					textureBody.wrapT = THREE.MirroredRepeatWrapping;
@@ -288,12 +263,6 @@
 						time: { value: 0.0 }
 			
 					};
-
-					warpMaterial = new THREE.ShaderMaterial( {
-						uniforms: uniforms,
-						vertexShader: document.getElementById( 'vertexShader' ).textContent,
-						fragmentShader: document.getElementById( 'fragmentShader' ).textContent
-					} );
 
 					defaultBodyMaterial = new THREE.MeshPhongMaterial({
 						color : new THREE.Color(0.047058823529411764, 0.5058823529411764, 0.45098039215686275),
@@ -350,7 +319,7 @@
 					clipActionDefault = mixer.clipAction(allAntennTwitch).setDuration(1).play();
 					clipActionCum = mixer.clipAction(quakeMore).setDuration(1).play();
 					clipActionTwitch = mixer.clipAction(tailTwitch).setDuration(1).play();
-				
+			
 					animate();
 				});
 
@@ -407,11 +376,11 @@
 			};
 
 			function handleTransparency () {
-				if (bodyMesh.material.transparent && shellMesh.material.transparent) {
+				if (bodyMesh.material.transparent) {
 					if (bodyMesh.material.opacity.toFixed(2) == 0.65) { opacityIncreasing = true; }
 					if (bodyMesh.material.opacity >= 1) { opacityIncreasing = false; }
 					if (opacityIncreasing) {
-						shellMesh.material.opacity += 0.05;
+						// shellMesh.material.opacity += 0.05;
 						bodyMesh.material.opacity += 0.05;
 					}
 					if (!opacityIncreasing) {
@@ -460,6 +429,7 @@
 					lastTwitch = 0;
 				}
 			};
+			var alpha = 0;
 
 			function render() {
 				bodyMesh.material.morphTargets = true;
@@ -471,8 +441,8 @@
 				handleComeDown();
 				handleTransparency();
 				handleTwitches();
-				brink();
-		
+				handleSpriteRemoval();
+
 				// console.log(howOftenTwitch);
 				// console.log(lastTwitch);
 				mixer.update(delta);
@@ -480,55 +450,86 @@
 
 			};
 
+			function handleSpriteRemoval() {
+				if (spriteAdded > 0) {
+					spriteAdded++;
+				}
+
+				if (spriteAdded >= 30) {
+					shellMesh.remove(sprite);
+				}
+			};
+
 			function randomFromArray(array) {
 				return array[Math.floor(Math.random() * array.length)]; 
 			};
 
+			function makeParagraph(text) {
+				var para = document.createElement("P");
+				var t = document.createTextNode(text);
+				para.appendChild(t);
+				para.style.position = "absolute";
+				para.style.left = "55px";
+				para.style.top = "55px";
+				para.style.width = "35vw";
+				para.style.background = "#ce9db87a";
+				para.style.padding = "5px";
+				document.getElementsByTagName("body")[0].appendChild(para)
+			};
+
 			function cum() {
-				region.textContent = "came!";
+				sprite.material = spriteMaterial;
+				shellMesh.add(sprite);
+				makeParagraph("...Your message has been transmitted.It may take a few moments for a response to be received and printed.");
 				howOftenTwitch = 0;
 				lastTwitch = 1;
 				clipActionDefault.paused = false;
-				clipActionDefault.setDuration(1).play();
+				clipActionDefault.setDuration(0.01).play();
 				clipActionTwitch.paused = false;
-				clipActionTwitch.setDuration(1).play();
+				clipActionTwitch.setDuration(0.01).play();
 				clipActionCum.paused = false;
 				clipActionCum.setDuration(0.05).play();
 				came = true;
 
-				// TRANSPARENT CHANGES
-				// bodyMesh.material.transparent = true;
-				// shellMesh.material.transparent = true;
-				// opacityIncreasing = false;
 
 				xhttp.open("POST", printUrl, true);
 				xhttp.send();
 			};
 
 			function brink() {
+				//console.log("brink");
+				babyThing.play();
 				howOftenTwitch = 0;
 				lastTwitch = 1;
 				clipActionDefault.paused = false;
 				clipActionDefault.setDuration(0.5).play();
 				clipActionTwitch.paused = false;
-				clipActionTwitch.setDuration(1).play();
+				clipActionTwitch.setDuration(0.3).play();
 				clipActionCum.paused = false;
 				clipActionCum.setDuration(0.25).play();
+				//TRANSPARENT CHANGES
+				bodyMesh.material.transparent = true;
+				// shellMesh.material.transparent = true;
+				opacityIncreasing = false;
 			};
 
 			function nearlyCum () {
+				//console.log("nearlyCum");
+				wetSmash.play();
 				howOftenTwitch = 0;
 				lastTwitch = 1;
 				clipActionDefault.paused = false;
 				clipActionDefault.setDuration(0.35).play();
 				clipActionTwitch.paused = false;
-				clipActionTwitch.setDuration(1).play();
+				clipActionTwitch.setDuration(0.3).play();
 				clipActionCum.paused = false;
 				clipActionCum.setDuration(0.35).play();
 
 			};
 
 			function preCum() {
+				//console.log("preCum");
+				babyThing.play();
 				howOftenTwitch = 0;
 				lastTwitch = 1;
 				clipActionDefault.paused = false;
@@ -567,19 +568,28 @@
 				lastTwitch = 0;
 			};
 
+			function addSpriteMaterial(material) {
+				spriteAdded = 1;
+				sprite.material = material;
+				shellMesh.add(sprite);
+
+			};
+
 			function handleMainRegion() {
-				var region = document.getElementById('region');
+
 				var mc = new Hammer(region);
-				mc.get('swipe').set({ pointers: 1, velocity: 3, threshold: 150, direction: Hammer.DIRECTION_ALL });
-				mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2, interval: 200 }));
+				mc.get('swipe').set({ pointers: 1, velocity: 2.3, threshold: 50, direction: Hammer.DIRECTION_ALL });
+				mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2, interval: 350 }));
 				mc.add(new Hammer.Tap());
 				mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([mc.get('pan'), mc.get('rotate')]);
 	
 
 				var swipeCounter = 0;
-				mc.on("swipedown swipeleft swiperight swipeup swipe", function (ev) {
-					// region.textContent = ev.type + " gestures detected.";
+				var tapCounter = 0;
+				mc.on("swipedown swipe swipeup swipeleft swiperight", function (ev) {
+					
 					swipeCounter++;
+					//region.textContent = swipeCounter + ev.type + " gestures detected.";
 					
 					if (swipeCounter == 2) { preCum(); }
 					if (swipeCounter == 4) { nearlyCum(); }
@@ -588,20 +598,33 @@
 				});
 
 				mc.on("tap", function (ev) {
-					wetSmash.play();
-					region.textContent = ev.type + " gestures detected.";
+					swipeCounter++;
+					if(tapCounter < 13) {
+						wetSmash.play();
+						quakeThreeSeconds();
+					}else {
+						cum();
+					}
+					
+					//region.textContent = ev.type + " gestures detected.";
 				});
 
 				mc.on("doubletap", function (ev) {
-					// region.textContent = ev.type + " gestures detected.";
+					addSpriteMaterial(spriteMaterial2);
+					babyThing.play();
+					antennaeTwitchFourSeconds();
+					//region.textContent = ev.type + " gestures detected.";
 				});
 
 				mc.on("pinchstart pinchmove", function (ev) {
-					// region.textContent = ev.type + " gestures detected.";
+					nearlyCum();
+					//region.textContent = ev.type + " gestures detected.";
 				});
 
 				mc.on("press", function (ev) {
-					// region.textContent = ev.type + " gestures detected.";
+					addSpriteMaterial(spriteMaterialMultiply);
+					tailTwitchFourSeconds();
+					//region.textContent = ev.type + " gestures detected.";
 				});
 
 			};
@@ -611,10 +634,13 @@
 				var shell = new Hammer(shellRegion);
 
 				shell.on("tap", function (ev) {
+					// shellRegion.textContent = ev.type + " gestures detected.";
+					
 					tailTwitchFourSeconds();
 				});
 
 				shell.on("press", function (ev) {
+					// shellRegion.textContent = ev.type + " gestures detected.";
 					quakeThreeSeconds();
 				});
 				
@@ -625,17 +651,26 @@
 				var outerShell = new Hammer(outerShellRegion);
 
 				outerShell.on("tap", function (ev) {
+					// outerShellRegion.textContent = ev.type + " gestures detected.";
 					tailTwitchFourSeconds();
 				});
 
 				outerShell.on("press", function (ev) {
+					addSpriteMaterial(spriteMaterial2Subtract);
+					// outerShellRegion.textContent = ev.type + " gestures detected.";
 					quakeThreeSeconds();
 				});
 			};
 
-			handleMainRegion();
-			handleShellRegion();
-			handleOuterShellRegion();
+			function closeOverlay() {
+				wetSmash.play();
+				var intro = document.getElementById('intro');
+				intro.parentNode.removeChild(intro);
+				document.getElementsByTagName("body")[0].style.overflow = "hidden";
+				handleMainRegion();
+				handleShellRegion();
+				handleOuterShellRegion();
+			};
 
 
 		</script>
