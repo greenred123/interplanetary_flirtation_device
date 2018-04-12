@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - blender -json</title>
+		<title>INTERPLANETARY FLIRTATION DEVICE</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -67,14 +67,14 @@
 			monster by <a href="http://www.3drt.com/downloads.htm" target="_blank" rel="noopener">3drt</a>
 		</div> -->
 
-		<!-- <script src="static/threejs/three.js"></script>
+		<script src="static/threejs/three.js"></script>
 		<script src="static/hammerjs/hammer.js"></script>
 		<script src="static/threejs/Detector.js"></script>
-		<script src="static/threejs/stats.min.js"></script> -->
-		<script src="threejs/three-91.js"></script>
+		<script src="static/threejs/stats.min.js"></script>
+		<!-- <script src="threejs/three-91.js"></script>
 		<script src="hammerjs/hammer.js"></script>
 		<script src="threejs/Detector.js"></script>
-		<script src="threejs/stats.min.js"></script>
+		<script src="threejs/stats.min.js"></script> -->
 		<script id="fragmentShader" type="x-shader/x-fragment">
 			precision highp float;
 			precision highp int;
@@ -229,12 +229,13 @@
 			var camera, scene, renderer, objects, mesh, uniforms;
 			var shellMesh, bodyMesh, warpMaterial, lastTwitch, howOftenTwitch, 
 			clipActionDefault, clipActionCum, clipActionTwitch, opacityIncreasing,
-			cumDownTimer, wetSmash;
-			// var url = 'static/snail-5.json';
-			var url = 'snail-animation.json';
+			cumDownTimer, wetSmash
+			var url = 'static/snail-5.json';
+			// var url = 'snail-animation.json';
 			var printUrl = "http://192.168.1.9/print_file";
 			var xhttp = new XMLHttpRequest();
 			var came = false;
+			var soundIos = false;
 
 			if (!Detector.webgl) {
 				Detector.addGetWebGLMessage();
@@ -247,7 +248,8 @@
 			};
 
 			function init() {
-				wetSmash = new Audio('audio/wet-smash.wav');
+				wetSmash = new Audio('static/audio/wet-smash.wav');
+				//wetSmash = new Audio('audio/wet-smash.wav');
 
 				var SCREEN_WIDTH = window.innerWidth;
 				var SCREEN_HEIGHT = window.innerHeight;
@@ -271,8 +273,8 @@
 
 				new THREE.ObjectLoader().load(url, function (loadedScene) {
 					scene = loadedScene;
-					//texture = new THREE.TextureLoader().load("static/background.jpg");
-					textureBody = new THREE.TextureLoader().load("background.jpg");
+					texture = new THREE.TextureLoader().load("static/background.jpg");
+					// textureBody = new THREE.TextureLoader().load("background.jpg");
 					textureBody.repeat.set( 1.22, 1.22);
 					textureBody.wrapS = THREE.MirroredRepeatWrapping;
 					textureBody.wrapT = THREE.MirroredRepeatWrapping;
@@ -469,6 +471,7 @@
 				handleComeDown();
 				handleTransparency();
 				handleTwitches();
+				brink();
 		
 				// console.log(howOftenTwitch);
 				// console.log(lastTwitch);
@@ -498,8 +501,8 @@
 				// shellMesh.material.transparent = true;
 				// opacityIncreasing = false;
 
-				// xhttp.open("POST", printUrl, true);
-				// xhttp.send();
+				xhttp.open("POST", printUrl, true);
+				xhttp.send();
 			};
 
 			function brink() {
@@ -564,8 +567,6 @@
 				lastTwitch = 0;
 			};
 
-
-
 			function handleMainRegion() {
 				var region = document.getElementById('region');
 				var mc = new Hammer(region);
@@ -573,6 +574,7 @@
 				mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2, interval: 200 }));
 				mc.add(new Hammer.Tap());
 				mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([mc.get('pan'), mc.get('rotate')]);
+	
 
 				var swipeCounter = 0;
 				mc.on("swipedown swipeleft swiperight swipeup swipe", function (ev) {
