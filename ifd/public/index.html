@@ -148,7 +148,7 @@
 
 		<script>
 
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if ( ! Detector.webgl ) alert("Your phone doesn't have the correct hardware to view the work. Please ask a gallery attendant to borrow a phone.");
 
 			var container, stats, clock, mixer;
 			var camera, scene, renderer, objects, mesh, uniforms;
@@ -161,13 +161,6 @@
 			var printUrl = "http://192.168.1.9/print_file";
 			var xhttp = new XMLHttpRequest();
 			var came = false;
-
-
-			if (!Detector.webgl) {
-				Detector.addGetWebGLMessage();
-			} else { 
-				init();
-			}
 
 			function randomNumber() {
 				return Math.floor((Math.random() * 4) + 1);
