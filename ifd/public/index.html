@@ -155,7 +155,7 @@
 			var shellMesh, bodyMesh, lastTwitch, howOftenTwitch, 
 			clipActionDefault, clipActionCum, clipActionTwitch, opacityIncreasing,
 			cumDownTimer, wetSmash, babyThing, alienCum, sprite, spriteMaterial, spriteAdded, spriteMaterial2,
-			spriteMaterialMultiply, spriteMaterial2Subtract;
+			spriteMaterialMultiply, spriteMaterial2Subtract, cumTimes;
 			var url = 'static/snail-animation.json';
 			// var url = 'snail-animation.json';
 			var printUrl = "http://192.168.1.9/print_file";
@@ -478,6 +478,7 @@
 			};
 
 			function cum() {
+				cumTimes++;
 				sprite.material = spriteMaterial;
 				shellMesh.add(sprite);
 				makeParagraph("...Your message has been transmitted.It may take a few moments for a response to be received and printed.");
@@ -491,9 +492,11 @@
 				clipActionCum.setDuration(0.05).play();
 				came = true;
 
-
-				xhttp.open("POST", printUrl, true);
-				xhttp.send();
+				if (cumTimes < 3) {
+					xhttp.open("POST", printUrl, true);
+					xhttp.send();
+				}
+				
 			};
 
 			function brink() {
