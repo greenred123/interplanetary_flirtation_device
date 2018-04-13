@@ -63,6 +63,11 @@ var Detector = {
 
 		element = Detector.getWebGLErrorMessage();
 		element.id = id;
+		element.style.zIndex = "5";
+		element.style.width = "100vw";
+		element.style.height = "100vh";
+		element.style.backgroundColor = "black";
+		element.style.color = "white";
 
 		parent.appendChild( element );
 
