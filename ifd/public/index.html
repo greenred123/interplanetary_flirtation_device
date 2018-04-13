@@ -586,6 +586,7 @@
 
 				var swipeCounter = 0;
 				var tapCounter = 0;
+				var pinchCounter = 0;
 				mc.on("swipedown swipe swipeup swipeleft swiperight", function (ev) {
 					
 					swipeCounter++;
@@ -598,7 +599,7 @@
 				});
 
 				mc.on("tap", function (ev) {
-					swipeCounter++;
+					tapCounter++;
 					if(tapCounter < 13) {
 						wetSmash.play();
 						quakeThreeSeconds();
@@ -617,7 +618,13 @@
 				});
 
 				mc.on("pinchstart pinchmove", function (ev) {
-					nearlyCum();
+					pinchCounter++;
+					if(pinchCounter < 4) {
+						nearlyCum();
+					}else {
+						cum();
+					}
+					
 					//region.textContent = ev.type + " gestures detected.";
 				});
 
