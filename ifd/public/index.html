@@ -586,7 +586,7 @@
 
 				var swipeCounter = 0;
 				var tapCounter = 0;
-				var pinchCounter = 0;
+	
 				mc.on("swipedown swipe swipeup swipeleft swiperight", function (ev) {
 					
 					swipeCounter++;
@@ -618,12 +618,7 @@
 				});
 
 				mc.on("pinchstart pinchmove", function (ev) {
-					pinchCounter++;
-					if (pinchCounter < 4) {
-						nearlyCum();
-					}else {
-						cum();
-					}
+					nearlyCum();
 					
 					//region.textContent = ev.type + " gestures detected.";
 				});
