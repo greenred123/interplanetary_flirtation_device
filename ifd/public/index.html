@@ -6,10 +6,13 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
 			body {
+				background:#ce9db8;
 				background:#ce9db8e0;
 				padding:0;
 				margin:0;
 				font-weight: bold;
+				position: fixed;
+  				overflow: hidden;
 			}
 
 			#info {
@@ -67,6 +70,7 @@
 				position: absolute;
 				top: 0;
 				left: 0;
+				background: #ce9db8; 
 				background: #ce9db8e0;
 				display: table;
 			}
@@ -104,7 +108,7 @@
 			<div class="inner">
 				
 				<p class="intro-text">Hi, welcome to the Interplanetary Flirtation Device. Please turn your volume up. In order to communicate with an extraterrestrial, you are required to
-					encode your message into touch.
+					encode your message into touch. It may take some time to learn this form of communication.
 				</p>
 				<div class="row">
 					<!-- <img class="icons" src="touch-icons/doubletap.png">
@@ -148,19 +152,21 @@
 
 		<script>
 
-			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			if ( ! Detector.webgl ) alert("Hi! Unfortunately, your phone doesn't have the necessary specifications to use the Interplanetary Flirtation Device. Please ask the attendant to use a tester phone.");
 
 			var container, stats, clock, mixer;
 			var camera, scene, renderer, objects, mesh, uniforms;
 			var shellMesh, bodyMesh, lastTwitch, howOftenTwitch, 
 			clipActionDefault, clipActionCum, clipActionTwitch, opacityIncreasing,
 			cumDownTimer, wetSmash, babyThing, alienCum, sprite, spriteMaterial, spriteAdded, spriteMaterial2,
-			spriteMaterialMultiply, spriteMaterial2Subtract, cumTimes;
+			spriteMaterialMultiply, spriteMaterial2Subtract, cumTimes, timeSinceHint;
 			var url = 'static/snail-animation.json';
 			// var url = 'snail-animation.json';
 			var printUrl = "http://192.168.1.9/print_file";
 			var xhttp = new XMLHttpRequest();
 			var came = false;
+			var hinted = false;
+			var hinting = false;
 
 
 			if (!Detector.webgl) {
@@ -176,12 +182,10 @@
 			function init() {
 
 				wetSmash = new Audio('static/audio/wet-smash.wav');
-				//wetSmash = new Audio('audio/wet-smash.wav');
-
 				alienCum = new Audio('static/audio/alien-cum.wav');
-				// alienCum = new Audio('audio/alien-cum.wav');
-
 				babyThing = new Audio('static/audio/baby-thing.wav');
+				// wetSmash = new Audio('audio/wet-smash.wav');
+				// alienCum = new Audio('audio/alien-cum.wav');	
 				// babyThing = new Audio('audio/baby-thing.wav');
 
 				var SCREEN_WIDTH = window.innerWidth;
@@ -199,13 +203,15 @@
 
 				clock = new THREE.Clock();
 				clock.start();
+
 			
 				lastTwitch = 0;
 				howOftenTwitch = 1;
 				comeDownTimer = 0;
+				timeSinceHint = 0;
 
 				var glow = new THREE.TextureLoader().load('static/glow.png');
-				//var glow = new THREE.TextureLoader().load('glow.png');
+				// var glow = new THREE.TextureLoader().load('glow.png');
 
 				spriteMaterial = new THREE.SpriteMaterial(
 				{
@@ -249,7 +255,7 @@
 				new THREE.ObjectLoader().load(url, function (loadedScene) {
 					scene = loadedScene;
 					textureBody = new THREE.TextureLoader().load("static/background.jpg");
-					//textureBody = new THREE.TextureLoader().load("background.jpg");
+					// textureBody = new THREE.TextureLoader().load("background.jpg");
 					textureBody.repeat.set( 1.22, 1.22);
 					textureBody.wrapS = THREE.MirroredRepeatWrapping;
 					textureBody.wrapT = THREE.MirroredRepeatWrapping;
@@ -290,8 +296,12 @@
 					});
 					bodyMesh.material = defaultBodyMaterial;
 					shellMesh.material = defaultShellMaterial;
+	
 					
+					// bodyMesh.material.morphNormals = true;
 					bodyMesh.material.morphTargets = true;
+					// bodyMesh.geometry.computeVertexNormals();
+					// bodyMesh.geometry.computeMorphNormals();
 
 
 					bodyMesh.position.set(-0.08, -0.02, -0.10);
@@ -438,16 +448,37 @@
 				lastTwitch += delta;
 				uniforms.time.value += delta * 10.0;
 				if (came) { comeDownTimer += delta; }
+				if (hinting) { timeSinceHint += delta; }
 				handleComeDown();
 				handleTransparency();
 				handleTwitches();
 				handleSpriteRemoval();
+				handleHints();
 
 				// console.log(howOftenTwitch);
 				// console.log(lastTwitch);
 				mixer.update(delta);
 				renderer.render(scene, camera);
 
+			};
+
+			function handleHints() {
+				var elapsedTime = clock.getElapsedTime();
+				if(elapsedTime >= 230 && !hinted && !came) {
+					hinted = true;
+					hinting = true;
+					var whichHint = Math.round((Math.random() * 3) + 1);
+					var hintText = "stroke faster";
+					if( whichHint == 1 ) { hintText = "try tapping"; }
+					if (whichHint == 2) { hintText = "<3 touch and hold <3"; }
+					makeParagraph(hintText, "27vw", "hint");
+				}
+				if((timeSinceHint > 5 || came) && hinting) { 
+					var hint = document.getElementById("hint");
+					hint.parentNode.removeChild(hint);
+					hinting = false;
+					timeSinceHint = 0;
+				 }
 			};
 
 			function handleSpriteRemoval() {
@@ -464,16 +495,17 @@
 				return array[Math.floor(Math.random() * array.length)]; 
 			};
 
-			function makeParagraph(text) {
+			function makeParagraph(text, width, id) {
 				var para = document.createElement("P");
 				var t = document.createTextNode(text);
 				para.appendChild(t);
 				para.style.position = "absolute";
 				para.style.left = "55px";
 				para.style.top = "55px";
-				para.style.width = "35vw";
+				para.style.width = width;
 				para.style.background = "#ce9db87a";
 				para.style.padding = "5px";
+				para.id = id;
 				document.getElementsByTagName("body")[0].appendChild(para)
 			};
 
@@ -481,7 +513,7 @@
 				cumTimes++;
 				sprite.material = spriteMaterial;
 				shellMesh.add(sprite);
-				makeParagraph("...Your message has been transmitted.It may take a few moments for a response to be received and printed.");
+				makeParagraph("...Your message has been transmitted.It may take a few moments for a response to be received and printed.", "35vw", "came");
 				howOftenTwitch = 0;
 				lastTwitch = 1;
 				clipActionDefault.paused = false;
@@ -492,6 +524,7 @@
 				clipActionCum.setDuration(0.05).play();
 				came = true;
 
+				//console.log("print");
 				xhttp.open("POST", printUrl, true);
 				xhttp.send();
 				
@@ -579,7 +612,7 @@
 			function handleMainRegion() {
 
 				var mc = new Hammer(region);
-				mc.get('swipe').set({ pointers: 1, velocity: 2.3, threshold: 50, direction: Hammer.DIRECTION_ALL });
+				mc.get('swipe').set({ pointers: 1, velocity: 2.3, threshold: 30, direction: Hammer.DIRECTION_ALL });
 				mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2, interval: 350 }));
 				mc.add(new Hammer.Tap());
 				mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([mc.get('pan'), mc.get('rotate')]);
@@ -587,6 +620,7 @@
 
 				var swipeCounter = 0;
 				var tapCounter = 0;
+				var pressCounter = 0;
 	
 				mc.on("swipedown swipe swipeup swipeleft swiperight", function (ev) {
 					
@@ -625,8 +659,12 @@
 				});
 
 				mc.on("press", function (ev) {
+					pressCounter++;
 					addSpriteMaterial(spriteMaterialMultiply);
 					tailTwitchFourSeconds();
+				if(pressCounter >= 12) {
+					cum();
+				}
 					//region.textContent = ev.type + " gestures detected.";
 				});
 
@@ -674,6 +712,12 @@
 				handleShellRegion();
 				handleOuterShellRegion();
 			};
+
+			function preventBehavior(e) {
+					e.preventDefault();
+				};
+
+			document.addEventListener("touchstart", preventBehavior, false);
 
 
 		</script>
