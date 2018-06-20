@@ -3,7 +3,7 @@
 
 The Interplanetary Flirtation Device is a two-way telecommunication system designed for
 communicating with extraterrestrial beings. It has been presented in 2018 at [Sister Gallery]
-(https://www.sistergallery.com.au/)(Adelaide, Australia) and [<Interrupted = “Cyfem and
+(https://www.sistergallery.com.au/) (Adelaide, Australia) and [<Interrupted = “Cyfem and
 Queer”>](http://interrupted.creamcake.de/) (Berlin, Germany).
 
 ![gestures to touch a phone](/images/gestures.png)
