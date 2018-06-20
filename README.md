@@ -14,8 +14,8 @@ protocol using a smartphone and a modern webbrowser. The input device for human 
 underside of a snail's foot. Using a combination of simple or multi-touch gestures, the
 Gastropod foot can be manually stimulated in order to communicate.The input is translated into
 detailed messages consumable by extraterrestrial users and transmitted via the Interplanetary
-Flirtation Device. Responses received from alien life-forms are translated into English and
-printed onto paper for human users to read.
+Flirtation Device. [Responses received from alien life-forms](ifd/print-files/
+) are translated into English and printed onto paper for human users to read.
 
 ![hand using phone touchscreen with animation of snail](/images/image1.jpg)
 
