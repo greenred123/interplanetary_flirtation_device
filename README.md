@@ -27,4 +27,4 @@ printed onto paper for human users to read.
 
 ![shells lying on a mirror on the floor](/images/image2.jpg)
 
-![installation shot of printer on floor covered in  black plastic](/images/image5.jpg)
+![installation shot of printer on floor covered in  black plastic](/images/image5.JPG)
