@@ -18,9 +18,9 @@ printed onto paper for human users to read.
 
 ![hand using phone touchscreen with animation of snail](/images/image1.jpg)
 
-![responses printed from aliens](/images/image4.jpg)
-
 ![animated wiggling snail](/images/snail-small.gif)
+
+![responses printed from aliens](/images/image4.jpg)
 
 ![printer in deep sleep](/images/image3.jpg)
 
