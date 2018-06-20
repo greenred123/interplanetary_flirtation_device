@@ -27,3 +27,10 @@ printed onto paper for human users to read.
 ![shells lying on a mirror on the floor](/images/image2.jpg)
 
 ![installation shot of printer on floor covered in  black plastic](/images/image5.JPG)
+
+During the making of this device I have been thinking about:
+
+- alternate models for sexual and emotional relationships
+- visceral bodies entering into and being transformed by virtual spaces
+- miscommunicating with strangers
+- poetic devices and interfaces designed for fictional scenarios
