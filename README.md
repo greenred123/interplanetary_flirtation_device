@@ -4,7 +4,7 @@
     (https://www.sistergallery.com.au/) (Adelaide, Australia) and [<Interrupted = “Cyfem and
     Queer”>] (http://interrupted.creamcake.de/) (Berlin, Germany).
     
-    ! [gestures to touch a phone] (images/gestures.png)
+    [gestures to touch a phone] (images/gestures.png)
 
     In order to contact alien life-forms, human users are required to send messages according to an
     experimental haptic stimulation protocol. Users can access the first implementation of this
@@ -15,14 +15,14 @@
     Flirtation Device. Responses received from alien life-forms are translated into English and
     printed onto paper for human users to read.
 
-    ![hand using phone touchscreen with animation of snail](images/image1.jpg)
+    [hand using phone touchscreen with animation of snail](images/image1.jpg)
 
-    ![responses printed from aliens](images/image4.jpg)
+    [responses printed from aliens](images/image4.jpg)
 
-    ![animated wiggling snail](images/snail-small.gif)
+    [animated wiggling snail](images/snail-small.gif)
 
-    ! [printer in deep sleep] (images/image3.jpg)
+    [printer in deep sleep] (images/image3.jpg)
 
-    ! [shells lying on a mirror on the floor] (images/image2.jpg)
+    [shells lying on a mirror on the floor] (images/image2.jpg)
 
-    ! [installation shot of printer on floor covered in  black plastic] (images/image5.jpg)
+    [installation shot of printer on floor covered in  black plastic] (images/image5.jpg)
