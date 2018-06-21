@@ -29,6 +29,8 @@ Flirtation Device. [Responses received from alien life-forms](ifd/print-files/
 
 ![installation shot of printer on floor covered in  black plastic](/images/image5.JPG)
 
+Images by Aly Bennett and Chloe Langford.
+
 During the making of this device I have been thinking about:
 
 - alternate models for sexual and emotional relationships
